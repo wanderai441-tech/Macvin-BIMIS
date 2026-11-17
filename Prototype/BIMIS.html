@@ -1,0 +1,1292 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIMIS | Macvin Hardware</title>
+
+<style>
+:root {
+ --navy:#14243b;
+ --blue:#2864dc;
+ --light:#f3f6fb;
+ --white:#fff;
+ --muted:#718096;
+ --green:#159765;
+ --red:#d94848;
+ --orange:#d88726;
+ --border:#e5eaf1;
+}
+* {box-sizing:border-box}
+body {margin:0;font-family:Arial,sans-serif;background:var(--light);color:#26364d}
+button,input,select {font:inherit}
+button {cursor:pointer}
+.login {
+ min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:white
+}
+.login-left {
+ background:linear-gradient(140deg,#12243c,#28588c);
+ color:white;padding:65px;display:flex;flex-direction:column;justify-content:center
+}
+.login-left h1 {font-size:42px;margin:0 0 12px}
+.login-left p {color:#d6e5f7;line-height:1.8;max-width:460px}
+.login-right {display:flex;align-items:center;justify-content:center;padding:30px}
+.login-card {width:100%;max-width:390px}
+.brand {font-size:30px;font-weight:800;color:var(--navy)}
+.field {margin:20px 0}
+.field label {display:block;font-size:13px;font-weight:bold;margin-bottom:8px}
+.field input {
+ width:100%;padding:14px;border:1px solid #dce3ed;border-radius:8px
+}
+.btn {
+ border:0;border-radius:7px;padding:11px 16px;
+ background:var(--blue);color:white;font-weight:bold
+}
+.btn:hover {opacity:.9}
+.btn.full {width:100%;padding:14px}
+.btn.secondary {background:#e9effa;color:#2454a0}
+.btn.danger {background:#d94848}
+.btn.small-btn {padding:7px 10px;font-size:11px}
+.error {color:#d33;font-size:13px;margin-top:12px}
+.app {display:none;min-height:100vh}
+.sidebar {
+ position:fixed;left:0;top:0;bottom:0;width:245px;
+ background:var(--navy);color:white;padding:24px 14px;overflow-y:auto
+}
+.brand-lockup {display:flex;align-items:center;gap:13px;padding:5px 8px 12px}
+.brand-symbol {width:58px;height:58px;flex-shrink:0}
+.logo-sub {font-size:10px;color:#aebed1;padding:3px 12px 25px;line-height:1.5}
+.nav-label {font-size:10px;color:#91a4bc;letter-spacing:1.4px;padding:15px 12px 8px}
+.nav button {
+ width:100%;text-align:left;background:none;border:0;color:#d4dfeb;
+ padding:12px;border-radius:7px;margin:2px 0
+}
+.nav button.active,.nav button:hover {background:#294463;color:white}
+.sidebar-bottom {margin-top:25px;border-top:1px solid #34465e;padding:18px 10px}
+.main {margin-left:245px}
+.topbar {
+ height:70px;background:white;border-bottom:1px solid var(--border);
+ display:flex;align-items:center;justify-content:space-between;padding:0 30px
+}
+.topbar strong {font-size:16px}
+.user {font-size:13px;color:#526176}
+.content {padding:27px 30px;max-width:1600px;margin:auto}
+.page-title {font-size:25px;margin:0 0 6px;color:#182b45}
+.page-sub {color:var(--muted);font-size:13px;margin-bottom:23px}
+.cards {display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:15px;margin-bottom:20px}
+.card {
+ background:white;border:1px solid var(--border);border-radius:10px;
+ padding:19px;box-shadow:0 3px 12px #172b4608
+}
+.card .label {font-size:12px;color:var(--muted)}
+.card .value {font-size:23px;font-weight:800;margin:12px 0 5px;color:#1d304a;overflow-wrap:anywhere}
+.card .note {font-size:11px;color:var(--green)}
+.panel {
+ background:white;border:1px solid var(--border);border-radius:10px;
+ padding:20px;margin-bottom:18px;overflow-x:auto
+}
+.panel h3 {margin:0 0 17px;font-size:16px}
+.grid2 {display:grid;grid-template-columns:1.2fr 1fr;gap:17px}
+.grid3 {display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+table {width:100%;border-collapse:collapse;font-size:13px;min-width:450px}
+th {
+ text-align:left;color:#718096;background:#f7f9fc;font-size:11px;
+ text-transform:uppercase;letter-spacing:.4px
+}
+td,th {padding:12px 10px;border-bottom:1px solid #edf0f5}
+tr:last-child td {border-bottom:0}
+.status {padding:5px 9px;border-radius:20px;font-size:11px;background:#e8f7ef;color:#168052;white-space:nowrap}
+.status.low {background:#fff0e6;color:#bd5b1a}
+.status.out {background:#ffe7e7;color:#bd3030}
+.form-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.form-grid input,.form-grid select,.actions input,.actions select {
+ padding:11px;border:1px solid #dce3ed;border-radius:7px;width:100%;background:white
+}
+.actions {display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
+.actions input,.actions select {width:auto;min-width:150px}
+.small {font-size:12px;color:var(--muted)}
+.empty {padding:22px;text-align:center;color:var(--muted)}
+.report-highlight {font-size:20px;font-weight:bold;color:#1d304a}
+.receipt-number {font-weight:bold;color:#2454a0}
+@media(max-width:900px) {
+ .sidebar {position:relative;width:100%;height:auto}
+ .main {margin-left:0}
+ .sidebar-bottom {display:none}
+ .cards {grid-template-columns:repeat(2,1fr)}
+ .grid2,.grid3 {grid-template-columns:1fr}
+ .login {grid-template-columns:1fr}
+ .login-left {display:none}
+ .content {padding:18px 13px}
+ .topbar {padding:0 15px}
+ .form-grid {grid-template-columns:1fr}
+}
+@media print {
+ .sidebar,.topbar,.no-print,button {display:none!important}
+ .main {margin:0}
+ .content {padding:0}
+ body {background:white}
+ .panel,.card {box-shadow:none;break-inside:avoid}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<section class="login" id="loginScreen">
+ <div class="login-left">
+  <div class="brand-lockup">
+   <svg class="brand-symbol" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="92" height="92" rx="20" fill="#ffffff"/>
+    <path d="M18 48 L50 20 L82 48" fill="none" stroke="#D9A441" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M27 45 V78 H73 V45" fill="none" stroke="#14243b" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M43 78 V57 H57 V78" fill="#2864dc"/>
+    <path d="M20 86 H80" stroke="#D9A441" stroke-width="5" stroke-linecap="round"/>
+   </svg>
+   <div>
+    <div style="font-size:30px;font-weight:800">MACVIN</div>
+    <div style="font-size:10px;letter-spacing:2px;color:#d6e5f7">HARDWARE & BUILDING SUPPLIES</div>
+   </div>
+  </div>
+  <h2>Business Integrated MIS</h2>
+  <p>One integrated platform for managing sales, inventory, procurement, finance and human resources.</p>
+  <p>MACVIN HARDWARE & BUILDING SUPPLIES LTD</p>
+ </div>
+
+ <div class="login-right">
+  <div class="login-card">
+   <div class="brand">BIMIS</div>
+   <p style="color:#718096">Sign in to your account</p>
+   <form id="loginForm">
+    <div class="field">
+     <label>Username</label>
+     <input id="username" required placeholder="Enter username">
+    </div>
+    <div class="field">
+     <label>Password</label>
+     <input id="password" type="password" required placeholder="Enter password">
+    </div>
+    <button class="btn full" type="submit">Sign In</button>
+    <div class="error" id="loginError"></div>
+   </form>
+   <p class="small">Demonstration system for Macvin Hardware.</p>
+  </div>
+ </div>
+</section>
+
+<!-- APPLICATION -->
+<section class="app" id="appScreen">
+ <aside class="sidebar">
+  <div class="brand-lockup">
+   <svg class="brand-symbol" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="92" height="92" rx="20" fill="#ffffff"/>
+    <path d="M18 48 L50 20 L82 48" fill="none" stroke="#D9A441" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M27 45 V78 H73 V45" fill="none" stroke="#14243b" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M43 78 V57 H57 V78" fill="#2864dc"/>
+    <path d="M20 86 H80" stroke="#D9A441" stroke-width="5" stroke-linecap="round"/>
+   </svg>
+   <div>
+    <div style="font-size:21px;font-weight:800;color:white">BIMIS</div>
+    <div style="font-size:10px;color:#d9a441;letter-spacing:1px">MACVIN HARDWARE</div>
+   </div>
+  </div>
+
+  <div class="logo-sub">MACVIN HARDWARE & BUILDING SUPPLIES</div>
+  <div class="nav" id="navigation"></div>
+
+  <div class="sidebar-bottom">
+   <div id="sideUser" style="font-size:13px"></div>
+   <button onclick="logout()" style="margin-top:14px;background:#294463;color:white;border:0;padding:11px;border-radius:7px;width:100%">Sign Out</button>
+  </div>
+ </aside>
+
+ <main class="main">
+  <header class="topbar">
+   <strong id="topTitle">Overview</strong>
+   <div class="user" id="topUser"></div>
+  </header>
+  <div class="content" id="pageContent"></div>
+ </main>
+</section>
+
+<script>
+/* USER ACCOUNTS */
+const accounts = {
+ owner:{password:"Macvin2026",name:"General Manager / CEO",role:"owner"},
+ sales:{password:"Macvin2026",name:"Sales Department",role:"sales"},
+ inventory:{password:"Macvin2026",name:"Inventory Department",role:"inventory"},
+ procurement:{password:"Macvin2026",name:"Procurement Department",role:"procurement"},
+ finance:{password:"Macvin2026",name:"Finance Department",role:"finance"},
+ hr:{password:"Macvin2026",name:"Administration & HR",role:"hr"}
+};
+
+let current = null;
+let activePage = "Overview";
+let saleCart = [];
+
+/* PRODUCT CATALOGUE
+   Prices are illustrative UGX selling prices.
+   Quantities are demonstration opening stock.
+*/
+const initialProducts = [
+ ["Cement","Building Materials",150,30,38000],
+ ["White Cement","Building Materials",25,5,55000],
+ ["Iron Sheets Gauge 28","Roofing Materials",60,15,55000],
+ ["Iron Sheets Gauge 30","Roofing Materials",50,12,48000],
+ ["Ridge Caps","Roofing Materials",25,6,30000],
+ ["Roofing Nails","Roofing Materials",80,20,12000],
+ ["Roofing Timber","Timber",40,10,18000],
+ ["Plywood","Timber",30,8,65000],
+ ["PVC Pipes 1/2 inch","Water & Plumbing",80,20,8000],
+ ["PVC Pipes 1 inch","Water & Plumbing",70,15,15000],
+ ["PVC Pipes 2 inch","Water & Plumbing",50,12,28000],
+ ["Water Taps","Water & Plumbing",45,10,12000],
+ ["Shower Heads","Water & Plumbing",20,5,25000],
+ ["Toilet Seats","Water & Plumbing",15,4,85000],
+ ["Water Connectors","Water & Plumbing",60,15,5000],
+ ["Elbows and Tees","Water & Plumbing",80,20,3000],
+ ["Valves","Water & Plumbing",25,6,15000],
+ ["Electrical Cables 1.5mm","Electrical Materials",80,20,3500],
+ ["Electrical Cables 2.5mm","Electrical Materials",70,18,5500],
+ ["Electrical Cables 4mm","Electrical Materials",45,10,8500],
+ ["Electrical Switches","Electrical Materials",60,15,6500],
+ ["Socket Outlets","Electrical Materials",55,12,8000],
+ ["LED Bulbs","Electrical Materials",100,25,7000],
+ ["Circuit Breakers","Electrical Materials",25,6,25000],
+ ["Electrical Conduits","Electrical Materials",70,18,5000],
+ ["Electrical Tape","Electrical Materials",90,20,2500],
+ ["Nails 2 inch","General Hardware",100,25,6000],
+ ["Nails 3 inch","General Hardware",90,20,8000],
+ ["Nails 4 inch","General Hardware",70,15,10000],
+ ["Bolts and Nuts","General Hardware",60,15,5000],
+ ["Hinges","General Hardware",50,12,8000],
+ ["Padlocks","General Hardware",35,8,15000],
+ ["Screws","General Hardware",80,20,5000],
+ ["Binding Wire","General Hardware",60,15,12000],
+ ["Steel Bars","Steel Products",50,12,35000],
+ ["Interior Paint","Paints & Finishes",25,6,85000],
+ ["Exterior Paint","Paints & Finishes",20,5,95000],
+ ["Paint Brushes","Paints & Finishes",40,10,8000],
+ ["Hammers","Tools",20,5,18000],
+ ["Measuring Tapes","Tools",30,8,15000]
+];
+
+function makeInitialData() {
+ return {
+  products:initialProducts.map((p,i)=>({
+   id:i+1,name:p[0],category:p[1],qty:p[2],reorder:p[3],price:p[4]
+  })),
+  sales:[],
+  suppliers:[
+   {name:"Kampala Building Supplies",contact:"0700000001",item:"Cement and building materials"},
+   {name:"Roofing Solutions Ltd",contact:"0700000002",item:"Iron sheets and roofing materials"},
+   {name:"Electrical World Ltd",contact:"0700000003",item:"Electrical materials"},
+   {name:"National Plumbing Suppliers",contact:"0700000004",item:"Water and plumbing materials"},
+   {name:"General Hardware Distributors",contact:"0700000005",item:"Tools and general hardware"}
+  ],
+  expenses:[
+   {description:"Transport",amount:150000,date:daysAgo(2)}
+  ],
+  staff:[
+   {department:"Management",count:1},
+   {department:"Sales",count:7},
+   {department:"Inventory",count:5},
+   {department:"Procurement",count:1},
+   {department:"Finance",count:3},
+   {department:"Administration & HR",count:3}
+  ],
+  employees:Array.from({length:20},(_,i)=>({
+   id:i+1,
+   name:"Employee "+String(i+1).padStart(2,"0"),
+   department:["Management","Sales","Sales","Sales","Sales","Sales","Sales","Sales","Inventory","Inventory","Inventory","Inventory","Inventory","Procurement","Finance","Finance","Finance","Administration & HR","Administration & HR","Administration & HR"][i],
+   position:["General Manager","Sales Attendant","Sales Attendant","Sales Attendant","Sales Attendant","Sales Attendant","Sales Attendant","Sales Attendant","Inventory Officer","Storekeeper","Storekeeper","Storekeeper","Storekeeper","Procurement Officer","Finance Officer","Accounts Assistant","Cashier","HR Officer","HR Assistant","Administration Assistant"][i],
+   phone:"Not provided",
+   email:"Not provided",
+   status:"Active"
+  })),
+  procurementRequests:[]
+ };
+}
+
+function daysAgo(n) {
+ let d=new Date();
+ d.setDate(d.getDate()-n);
+ return dateString(d);
+}
+
+function dateString(d) {
+ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
+/* LOAD SAVED DATA */
+let data;
+try {
+ data=JSON.parse(localStorage.getItem("bimisData"))||makeInitialData();
+ if(!data.products||!data.sales||!data.expenses) data=makeInitialData();
+} catch(e) {
+ data=makeInitialData();
+}
+
+/* DATA MIGRATION
+   Keep sales, expenses and supplier history while narrowing the catalogue
+   to 40 common products. Existing quantities are retained for matching items.
+*/
+if(localStorage.getItem("bimisCatalogueVersion")!=="2"){
+ const previousProducts=data.products||[];
+ data.products=initialProducts.map((p,i)=>{
+  const old=previousProducts.find(x=>x.name.toLowerCase()===p[0].toLowerCase());
+  return {
+   id:i+1,
+   name:p[0],
+   category:p[1],
+   qty:old?Number(old.qty):p[2],
+   reorder:old?Number(old.reorder):p[3],
+   price:old?Number(old.price):p[4]
+  };
+ });
+ localStorage.setItem("bimisCatalogueVersion","2");
+}
+if(!Array.isArray(data.employees)){
+ data.employees=makeInitialData().employees;
+}
+if(!Array.isArray(data.procurementRequests)) data.procurementRequests=[];
+data.sales.forEach(s=>{
+ if(!s.receiptNo) s.receiptNo=null;
+ if(!s.soldBy) s.soldBy="Previous transaction";
+ if(!s.items && s.item){
+  s.items=[{name:s.item,qty:Number(s.qty)||0,price:Number(s.unitPrice)||((Number(s.total)||0)/(Number(s.qty)||1))}];
+ }
+});
+save();
+
+function save() {
+ localStorage.setItem("bimisData",JSON.stringify(data));
+}
+
+function money(n) {
+ return "UGX "+Number(n||0).toLocaleString("en-US");
+}
+
+function today() {
+ return dateString(new Date());
+}
+
+function lowStock() {
+ return data.products.filter(p=>p.qty>0&&p.qty<=p.reorder);
+}
+
+function outStock() {
+ return data.products.filter(p=>p.qty<=0);
+}
+
+function totalRevenue(rows=data.sales) {
+ return rows.reduce((s,x)=>s+Number(x.total),0);
+}
+
+function totalExpenses(rows=data.expenses) {
+ return rows.reduce((s,x)=>s+Number(x.amount),0);
+}
+
+function saleLineItems(s) {
+ if(Array.isArray(s.items)) return s.items;
+ if(s.item) return [{name:s.item,qty:Number(s.qty)||0,price:Number(s.unitPrice)||((Number(s.total)||0)/(Number(s.qty)||1))}];
+ return [];
+}
+
+function saleProductsLabel(s) {
+ return saleLineItems(s).map(i=>i.name).join(", ");
+}
+
+function saleQuantity(s) {
+ return saleLineItems(s).reduce((sum,i)=>sum+Number(i.qty||0),0);
+}
+
+function departmentCounts() {
+ const counts={};
+ data.employees.forEach(e=>counts[e.department]=(counts[e.department]||0)+1);
+ return Object.entries(counts);
+}
+
+function stockValue() {
+ return data.products.reduce((s,p)=>s+p.qty*p.price,0);
+}
+
+function startOfWeek() {
+ let d=new Date();
+ let day=d.getDay();
+ d.setDate(d.getDate()-(day===0?6:day-1));
+ return dateString(d);
+}
+
+function filteredSales(period) {
+ let t=today(),week=startOfWeek(),month=t.slice(0,7);
+ return data.sales.filter(s=>{
+  if(period==="daily") return s.date===t;
+  if(period==="weekly") return s.date>=week&&s.date<=t;
+  if(period==="monthly") return s.date.slice(0,7)===month;
+  return true;
+ });
+}
+
+function productPerformance() {
+ return data.products.map(p=>{
+  let qty=0,revenue=0;
+  data.sales.forEach(s=>saleLineItems(s).forEach(item=>{
+   if(item.name===p.name){
+    qty+=Number(item.qty||0);
+    revenue+=Number(item.qty||0)*Number(item.price||0);
+   }
+  }));
+  return {...p,sold:qty,revenue};
+ }).sort((a,b)=>b.sold-a.sold);
+}
+
+
+function categoryPerformance() {
+ let result={};
+ data.sales.forEach(s=>saleLineItems(s).forEach(item=>{
+  let p=data.products.find(x=>x.name===item.name);
+  let cat=p?p.category:"Other";
+  result[cat]=(result[cat]||0)+(Number(item.qty||0)*Number(item.price||0));
+ }));
+ return Object.entries(result).sort((a,b)=>b[1]-a[1]);
+}
+
+
+function canSee(page) {
+ if(!current) return false;
+ if(current.role==="owner") return true;
+ return ({
+  sales:["Sales"],
+  inventory:["Inventory"],
+  procurement:["Procurement"],
+  finance:["Finance"],
+  hr:["Human Resources"]
+ }[current.role]||[]).includes(page);
+}
+
+const pages=[
+ "Overview","Sales","Inventory","Procurement","Finance",
+ "Human Resources","Reports","User Access","Audit Log"
+];
+
+/* LOGIN */
+document.getElementById("loginForm").addEventListener("submit",function(e) {
+ e.preventDefault();
+
+ let u=document.getElementById("username").value.trim().toLowerCase();
+ let p=document.getElementById("password").value;
+
+ if(!accounts[u]||accounts[u].password!==p) {
+  document.getElementById("loginError").textContent="Invalid username or password.";
+  return;
+ }
+
+ current={username:u,...accounts[u]};
+ document.getElementById("loginScreen").style.display="none";
+ document.getElementById("appScreen").style.display="block";
+ document.getElementById("topUser").textContent=current.name;
+ document.getElementById("sideUser").textContent=current.name;
+
+ const landingPage=current.role==="owner"?"Overview":({
+  sales:"Sales",
+  inventory:"Inventory",
+  procurement:"Procurement",
+  finance:"Finance",
+  hr:"Human Resources"
+ }[current.role]||"Sales");
+ showPage(landingPage);
+});
+
+function logout() {
+ current=null;
+ document.getElementById("appScreen").style.display="none";
+ document.getElementById("loginScreen").style.display="grid";
+ document.getElementById("loginForm").reset();
+ document.getElementById("loginError").textContent="";
+}
+
+function icon(p) {
+ return ({
+  Overview:"◫",Sales:"▤",Inventory:"▦",Procurement:"⇄",
+  Finance:"＄","Human Resources":"♙",Reports:"▥",
+  "User Access":"♧","Audit Log":"◷"
+ })[p]||"•";
+}
+
+function buildNav() {
+ let allowed=pages.filter(canSee);
+ document.getElementById("navigation").innerHTML=
+  '<div class="nav-label">BUSINESS MENU</div>'+
+  allowed.map(p=>`<button class="${p===activePage?'active':''}" onclick="showPage('${p}')">${icon(p)} &nbsp; ${p}</button>`).join("");
+}
+
+function showPage(p) {
+ if(!canSee(p)) return;
+ activePage=p;
+ buildNav();
+ document.getElementById("topTitle").textContent=p;
+
+ const views={
+  "Overview":overview,
+  "Sales":salesPage,
+  "Inventory":inventoryPage,
+  "Procurement":procurementPage,
+  "Finance":financePage,
+  "Human Resources":hrPage,
+  "Reports":reportsPage,
+  "User Access":usersPage,
+  "Audit Log":auditPage
+ };
+
+ document.getElementById("pageContent").innerHTML=views[p]();
+}
+
+function heading(title,sub) {
+ return `<h1 class="page-title">${title}</h1><div class="page-sub">${sub}</div>`;
+}
+
+function metric(label,value,note="") {
+ return `<div class="card"><div class="label">${label}</div><div class="value">${value}</div><div class="note">${note}</div></div>`;
+}
+
+/* RECEIPT PERMISSIONS */
+function canAccessReceipts() {
+ return current && ["owner","sales"].includes(current.role);
+}
+
+/* SALES TABLE
+   Only the General Manager and Sales Department receive
+   receipt viewing and printing controls.
+*/
+function salesTable(rows) {
+ if(!rows.length) return '<div class="empty">No sales records available.</div>';
+ let receiptAccess=canAccessReceipts();
+ return `<table>
+ <tr><th>Date</th><th>Receipt Number</th><th>Items</th><th>Total Qty</th><th>Total</th>${receiptAccess?'<th>Receipt</th>':''}</tr>
+ ${rows.map(s=>{
+  let index=data.sales.indexOf(s);
+  return `<tr><td>${s.date}</td><td class="receipt-number">${s.receiptNo||"Previous sale"}</td><td>${saleProductsLabel(s)}</td><td>${saleQuantity(s)}</td><td>${money(s.total)}</td>${receiptAccess?`<td><button class="btn secondary small-btn" onclick="viewReceipt(${index})">View / Print</button></td>`:""}</tr>`;
+ }).join("")}
+ </table>`;
+}
+
+
+function stockTable(rows) {
+ if(!rows.length) return '<div class="empty">No products to display.</div>';
+
+ return `<table>
+ <tr><th>Product</th><th>Category</th><th>Quantity</th><th>Reorder Level</th><th>Status</th></tr>
+ ${rows.map(p=>{
+  let st=p.qty<=0?'<span class="status out">Out of stock</span>':
+   p.qty<=p.reorder?'<span class="status low">Low stock</span>':
+   '<span class="status">Available</span>';
+
+  return `<tr>
+   <td>${p.name}</td><td>${p.category}</td>
+   <td>${p.qty}</td><td>${p.reorder}</td><td>${st}</td>
+  </tr>`;
+ }).join("")}
+ </table>`;
+}
+
+/* DASHBOARD */
+function overview() {
+ if(!current||current.role!=="owner") {
+  return heading("Access Restricted","The business overview is confidential and can only be viewed by the General Manager / CEO.");
+ }
+ let daily=filteredSales("daily");
+ let weekly=filteredSales("weekly");
+ let monthly=filteredSales("monthly");
+ let performance=productPerformance();
+ let top=performance.find(p=>p.sold>0);
+ let least=performance.filter(p=>p.sold>0).slice(-1)[0];
+
+ let html=heading(
+  current.role==="owner"?"Owner Dashboard":"Business Overview",
+  "Macvin Hardware — Business performance summary"
+ );
+
+ html+=`<div class="cards">
+ ${metric("All-time Sales",money(totalRevenue()),data.sales.length+" recorded transactions")}
+ ${metric("Today's Sales",money(totalRevenue(daily)),daily.length+" transactions today")}
+ ${metric("This Week",money(totalRevenue(weekly)),weekly.length+" transactions this week")}
+ ${metric("This Month",money(totalRevenue(monthly)),monthly.length+" transactions this month")}
+ </div>`;
+
+ html+=`<div class="cards">
+ ${metric("Total Products",data.products.length,"Registered product types")}
+ ${metric("Stock Value",money(stockValue()),"Current stock at selling prices")}
+ ${metric("Low Stock Items",lowStock().length,"Products needing replenishment")}
+ ${metric("Out of Stock",outStock().length,"Products unavailable")}
+ </div>`;
+
+ html+=`<div class="grid2">
+ <div class="panel"><h3>Top-Selling Product</h3>
+ ${top?`<div class="report-highlight">${top.name}</div><p class="small">${top.sold} units sold · ${money(top.revenue)} revenue</p>`:'<div class="empty">No sales data available yet.</div>'}
+ </div>
+ <div class="panel"><h3>Least-Selling Product</h3>
+ ${least?`<div class="report-highlight">${least.name}</div><p class="small">${least.sold} units sold · ${money(least.revenue)} revenue</p>`:'<div class="empty">No sales data available yet.</div>'}
+ </div>
+ </div>`;
+
+ html+=`<div class="grid2">
+ <div class="panel"><h3>Recent Sales</h3>${salesTable(data.sales.slice(-6).reverse())}</div>
+ <div class="panel"><h3>Products Requiring Attention</h3>${stockTable([...outStock(),...lowStock()].slice(0,8))}</div>
+ </div>`;
+
+ if(current.role==="owner") {
+  html+=`<div class="panel"><h3>Department Overview</h3>
+  <table><tr><th>Department</th><th>Employees</th></tr>
+  ${departmentCounts().map(s=>`<tr><td>${s[0]}</td><td>${s[1]}</td></tr>`).join("")}
+  <tr><th>Total Employees</th><th>${data.employees.length}</th></tr></table></div>`;
+ }
+
+ return html;
+}
+
+/* RECEIPT NUMBER GENERATION */
+function generateReceiptNumber() {
+ let d=today().replaceAll("-","");
+ let prefix="MAC-"+d+"-";
+ let numbers=data.sales
+  .filter(s=>s.receiptNo&&s.receiptNo.startsWith(prefix))
+  .map(s=>Number(s.receiptNo.split("-").pop()))
+  .filter(n=>Number.isFinite(n));
+
+ let next=Math.max(0,...numbers)+1;
+ return prefix+String(next).padStart(4,"0");
+}
+
+/* SALES */
+function salesPage() {
+ return heading("Sales Management","Add several products to one customer cart and generate one combined receipt")+
+ `<div class="cards">
+ ${metric("All-time Revenue",money(totalRevenue()))}
+ ${metric("Today's Revenue",money(totalRevenue(filteredSales("daily"))))}
+ ${metric("Weekly Revenue",money(totalRevenue(filteredSales("weekly"))))}
+ ${metric("Monthly Revenue",money(totalRevenue(filteredSales("monthly"))))}
+ </div>
+ <div class="panel"><h3>Create Customer Sale</h3>
+ <div class="form-grid">
+  <input id="saleCustomer" placeholder="Customer name (optional)">
+  <select id="salePayment"><option>Cash</option><option>Mobile Money</option><option>Bank Transfer</option><option>Card</option></select>
+  <span></span>
+ </div>
+ <h3 style="margin-top:20px">Add Products to Cart</h3>
+ <div class="form-grid">
+  <select id="saleProduct">${data.products.filter(p=>p.qty>0).map(p=>`<option value="${p.id}">${p.name} — ${money(p.price)} (${p.qty} available)</option>`).join("")}</select>
+  <input id="saleQty" type="number" min="1" value="1" placeholder="Quantity">
+  <button class="btn" onclick="addToCart()">Add Item to Cart</button>
+ </div>
+ <div id="cartMessage" class="small" style="margin-top:10px"></div>
+ <div id="cartArea">${cartTable()}</div>
+ <div class="actions" style="margin-top:15px">
+  <button class="btn" onclick="completeSale()">Complete Sale & Generate Receipt</button>
+  <button class="btn secondary" onclick="clearCart()">Clear Cart</button>
+ </div>
+ <div class="small">Stock is deducted only after the sale is completed.</div>
+ </div>
+ <div class="panel"><h3>Sales Records</h3>
+ <div class="actions"><input type="date" id="salesDateFilter"><button class="btn secondary" onclick="filterSalesTable()">Filter Date</button><button class="btn secondary" onclick="showPage('Sales')">Show All</button></div>
+ <div id="salesTableArea">${salesTable(data.sales.slice().reverse())}</div>
+ <div id="receiptArea"></div>
+ </div>`;
+}
+
+
+function cartTable() {
+ if(!saleCart.length) return '<div class="empty">Your cart is empty. Select products and add them above.</div>';
+ let total=saleCart.reduce((sum,x)=>sum+x.qty*x.price,0);
+ return `<table><tr><th>Product</th><th>Unit Price</th><th>Quantity</th><th>Subtotal</th><th>Action</th></tr>
+ ${saleCart.map((x,i)=>`<tr><td>${x.name}</td><td>${money(x.price)}</td><td>${x.qty}</td><td>${money(x.qty*x.price)}</td><td><button class="btn danger small-btn" onclick="removeCartItem(${i})">Remove</button></td></tr>`).join("")}
+ <tr><th colspan="3">CART TOTAL</th><th>${money(total)}</th><th></th></tr></table>`;
+}
+
+function addToCart() {
+ const id=Number(document.getElementById("saleProduct").value);
+ const qty=Number(document.getElementById("saleQty").value);
+ const p=data.products.find(x=>x.id===id);
+ if(!p||!Number.isInteger(qty)||qty<1){alert("Select a product and enter a valid quantity.");return;}
+ const already=saleCart.filter(x=>x.id===id).reduce((n,x)=>n+x.qty,0);
+ if(already+qty>p.qty){alert("The requested quantity exceeds available stock.");return;}
+ const existing=saleCart.find(x=>x.id===id);
+ if(existing) existing.qty+=qty;
+ else saleCart.push({id:p.id,name:p.name,qty,price:p.price});
+ document.getElementById("saleQty").value=1;
+ document.getElementById("cartArea").innerHTML=cartTable();
+ document.getElementById("cartMessage").textContent=p.name+" added to cart.";
+}
+
+function removeCartItem(index) {
+ saleCart.splice(index,1);
+ document.getElementById("cartArea").innerHTML=cartTable();
+}
+
+function clearCart() {
+ saleCart=[];
+ const area=document.getElementById("cartArea");
+ if(area) area.innerHTML=cartTable();
+ const message=document.getElementById("cartMessage");
+ if(message) message.textContent="Cart cleared.";
+}
+
+function completeSale() {
+ if(!saleCart.length){alert("Add at least one product to the cart.");return;}
+ for(const item of saleCart){
+  const p=data.products.find(x=>x.id===item.id);
+  if(!p||item.qty>p.qty){alert("Stock has changed for "+item.name+". Review the cart.");return;}
+ }
+ const total=saleCart.reduce((sum,x)=>sum+x.qty*x.price,0);
+ const sale={
+  receiptNo:generateReceiptNumber(),
+  date:today(),
+  customer:document.getElementById("saleCustomer").value.trim()||"Walk-in Customer",
+  payment:document.getElementById("salePayment").value,
+  items:saleCart.map(x=>({...x})),
+  total,
+  soldBy:current.username
+ };
+ sale.items.forEach(item=>{
+  const p=data.products.find(x=>x.id===item.id);
+  p.qty-=item.qty;
+ });
+ data.sales.push(sale);
+ saleCart=[];
+ save();
+ showPage("Sales");
+ document.getElementById("receiptArea").innerHTML="";
+ viewReceipt(data.sales.length-1);
+ alert("Sale recorded successfully. Receipt: "+sale.receiptNo);
+}
+
+
+/* VIEW AND PRINT RECEIPT */
+function viewReceipt(index) {
+ if(!canAccessReceipts()){alert("You are not authorised to view or print receipts.");return;}
+ const s=data.sales[index];
+ if(!s){alert("Receipt record could not be found.");return;}
+ const items=saleLineItems(s);
+ const receiptNo=s.receiptNo||"Previous sale";
+ const printWindow=window.open("","_blank","width=650,height=750");
+ if(!printWindow){alert("Your browser blocked the receipt window. Allow pop-ups and try again.");return;}
+ printWindow.document.write(`<!DOCTYPE html><html><head><title>${receiptNo} - Macvin Hardware</title>
+ <style>body{font-family:Arial,sans-serif;padding:25px;color:#222}.receipt{max-width:440px;margin:auto;border:1px solid #ddd;padding:25px}h2,.centre{text-align:center}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 4px;border-bottom:1px solid #ddd;text-align:left}.right{text-align:right}.line{border-top:1px dashed #777;margin:15px 0}.total{font-size:17px;font-weight:bold}.footer{text-align:center;margin-top:22px;font-size:13px}button{padding:10px 20px;background:#2864dc;color:white;border:0;border-radius:5px}@media print{button{display:none}}</style></head><body>
+ <div class="receipt"><h2>MACVIN HARDWARE</h2><div class="centre">HARDWARE & BUILDING SUPPLIES LTD</div><div class="centre">SALES RECEIPT</div><div class="line"></div>
+ <p><b>Receipt No:</b> ${receiptNo}<br><b>Date:</b> ${s.date}<br><b>Customer:</b> ${s.customer||"Walk-in Customer"}<br><b>Sales Attendant:</b> ${s.soldBy||"Sales Department"}<br><b>Payment:</b> ${s.payment||"Not specified"}</p><div class="line"></div>
+ <table><tr><th>Product</th><th>Qty</th><th class="right">Unit Price</th><th class="right">Amount</th></tr>
+ ${items.map(i=>`<tr><td>${i.name}</td><td>${i.qty}</td><td class="right">${money(i.price)}</td><td class="right">${money(Number(i.qty)*Number(i.price))}</td></tr>`).join("")}
+ </table><p class="right total">TOTAL: ${money(s.total)}</p><div class="line"></div>
+ <div class="footer"><p>Thank you for shopping with Macvin Hardware.</p><p>We appreciate your business!</p><button onclick="window.print()">Print Receipt</button></div></div></body></html>`);
+ printWindow.document.close();
+}
+
+
+function filterSalesTable() {
+ let d=document.getElementById("salesDateFilter").value;
+ let rows=d?data.sales.filter(s=>s.date===d):data.sales;
+ document.getElementById("salesTableArea").innerHTML=salesTable(rows.slice().reverse());
+}
+
+/* INVENTORY */
+function inventoryPage() {
+ let categories=[...new Set(data.products.map(p=>p.category))];
+
+ return heading("Inventory Management","Manage products, quantities, prices and stock levels")+
+ `<div class="cards">
+ ${metric("Product Types",data.products.length)}
+ ${metric("Total Stock Units",data.products.reduce((s,p)=>s+p.qty,0))}
+ ${metric("Low Stock",lowStock().length)}
+ ${metric("Out of Stock",outStock().length)}
+ </div>
+
+ <div class="panel"><h3>Add New Product</h3>
+ <div class="form-grid">
+ <input id="prodName" placeholder="Product name">
+ <select id="prodCategory">
+ ${["Building Materials","Roofing Materials","Timber","Water & Plumbing","Electrical Materials","General Hardware","Steel Products","Paints & Finishes","Tools","Other"].map(c=>`<option>${c}</option>`).join("")}
+ </select>
+ <input id="prodQty" type="number" min="0" placeholder="Opening quantity">
+ <input id="prodReorder" type="number" min="0" placeholder="Reorder level">
+ <input id="prodPrice" type="number" min="1" placeholder="Selling price (UGX)">
+ <button class="btn" onclick="addProduct()">Add Product</button>
+ </div></div>
+
+ <div class="panel"><h3>Receive Additional Stock</h3>
+ <div class="form-grid">
+ <select id="stockProduct">
+ ${data.products.map(p=>`<option value="${p.id}">${p.name}</option>`).join("")}
+ </select>
+ <input id="stockQty" type="number" min="1" placeholder="Quantity received">
+ <button class="btn" onclick="receiveStock()">Update Stock</button>
+ </div></div>
+
+ <div class="panel"><h3>Product Catalogue</h3>
+ <div class="actions">
+ <input id="productSearch" placeholder="Search product..." oninput="searchProducts()">
+ <select id="categoryFilter" onchange="searchProducts()">
+ <option value="">All Categories</option>
+ ${categories.map(c=>`<option>${c}</option>`).join("")}
+ </select>
+ </div>
+ <div id="productTable">${stockTable(data.products)}</div>
+ </div>`;
+}
+
+function addProduct() {
+ let name=document.getElementById("prodName").value.trim();
+ let category=document.getElementById("prodCategory").value;
+ let qty=Number(document.getElementById("prodQty").value);
+ let reorder=Number(document.getElementById("prodReorder").value);
+ let price=Number(document.getElementById("prodPrice").value);
+
+ if(!name||qty<0||reorder<0||price<=0||!Number.isFinite(qty)) {
+  alert("Enter valid product details.");
+  return;
+ }
+
+ if(data.products.some(p=>p.name.toLowerCase()===name.toLowerCase())) {
+  alert("This product already exists.");
+  return;
+ }
+
+ data.products.push({
+  id:Date.now(),name,category,qty,reorder,price
+ });
+
+ save();
+ showPage("Inventory");
+}
+
+function receiveStock() {
+ let id=Number(document.getElementById("stockProduct").value);
+ let qty=Number(document.getElementById("stockQty").value);
+ let p=data.products.find(x=>x.id===id);
+
+ if(!p||!Number.isInteger(qty)||qty<1) {
+  alert("Enter a valid stock quantity.");
+  return;
+ }
+
+ p.qty+=qty;
+ save();
+ showPage("Inventory");
+}
+
+function searchProducts() {
+ let q=document.getElementById("productSearch").value.toLowerCase();
+ let c=document.getElementById("categoryFilter").value;
+
+ let rows=data.products.filter(p=>
+  p.name.toLowerCase().includes(q)&&(!c||p.category===c)
+ );
+
+ document.getElementById("productTable").innerHTML=stockTable(rows);
+}
+
+/* PROCUREMENT */
+function procurementPage() {
+ return heading("Procurement Management","Manage suppliers, prepare purchase requests and monitor replenishment needs")+
+ `<div class="cards">${metric("Registered Suppliers",data.suppliers.length)}${metric("Pending Requests",data.procurementRequests.filter(r=>r.status==="Pending").length)}${metric("Low Stock Items",lowStock().length)}${metric("Out of Stock Items",outStock().length)}</div>
+ <div class="panel"><h3>Register Supplier</h3><div class="form-grid">
+ <input id="supplierName" placeholder="Supplier name"><input id="supplierContact" placeholder="Contact number"><input id="supplierItem" placeholder="Products supplied">
+ <button class="btn" onclick="addSupplier()">Add Supplier</button></div></div>
+ <div class="panel"><h3>Supplier Records</h3>
+ <table><tr><th>Supplier</th><th>Contact</th><th>Products Supplied</th><th>Actions</th></tr>
+ ${data.suppliers.map((s,i)=>`<tr><td>${s.name}</td><td>${s.contact}</td><td>${s.item}</td><td><button class="btn secondary small-btn" onclick="editSupplier(${i})">Edit</button> <button class="btn danger small-btn" onclick="deleteSupplier(${i})">Delete</button></td></tr>`).join("")}</table></div>
+ <div class="panel"><h3>Create Purchase Request</h3><p class="small">Requests are sent for management approval. Receiving stock remains an Inventory responsibility.</p>
+ <div class="form-grid"><select id="requestProduct">${data.products.map(p=>`<option value="${p.id}">${p.name} — available: ${p.qty}</option>`).join("")}</select>
+ <input id="requestQty" type="number" min="1" placeholder="Quantity required">
+ <select id="requestSupplier"><option value="">Select supplier (optional)</option>${data.suppliers.map((s,i)=>`<option value="${i}">${s.name}</option>`).join("")}</select>
+ <button class="btn" onclick="createPurchaseRequest()">Submit Purchase Request</button></div></div>
+ <div class="panel"><h3>Purchase Requests</h3>
+ ${data.procurementRequests.length?`<table><tr><th>Date</th><th>Product</th><th>Quantity</th><th>Supplier</th><th>Status</th><th>Action</th></tr>
+ ${data.procurementRequests.map((r,i)=>`<tr><td>${r.date}</td><td>${r.product}</td><td>${r.qty}</td><td>${r.supplier||"Not selected"}</td><td>${r.status}</td><td>${r.status==="Pending"?`<button class="btn secondary small-btn" onclick="updatePurchaseRequest(${i},'Submitted for approval')">Submit for Approval</button>`:`<span class="small">Recorded</span>`}</td></tr>`).join("")}</table>`:'<div class="empty">No purchase requests have been created.</div>'}
+ </div>
+ <div class="panel"><h3>Replenishment Requirements</h3><p class="small">Products that have reached or fallen below their reorder levels.</p>${stockTable([...outStock(),...lowStock()])}</div>`;
+}
+
+function addSupplier() {
+ const name=document.getElementById("supplierName").value.trim();
+ const contact=document.getElementById("supplierContact").value.trim();
+ const item=document.getElementById("supplierItem").value.trim();
+ if(!name||!contact||!item){alert("Complete all supplier details.");return;}
+ data.suppliers.push({name,contact,item});save();showPage("Procurement");
+}
+
+function editSupplier(index) {
+ const s=data.suppliers[index];if(!s)return;
+ const name=prompt("Supplier name:",s.name);if(name===null)return;
+ const contact=prompt("Contact number:",s.contact);if(contact===null)return;
+ const item=prompt("Products supplied:",s.item);if(item===null)return;
+ if(!name.trim()||!contact.trim()||!item.trim()){alert("Supplier details cannot be empty.");return;}
+ data.suppliers[index]={name:name.trim(),contact:contact.trim(),item:item.trim()};save();showPage("Procurement");
+}
+
+function deleteSupplier(index) {
+ if(!data.suppliers[index])return;
+ if(!confirm("Remove this supplier record? Existing purchase request history will remain."))return;
+ data.suppliers.splice(index,1);save();showPage("Procurement");
+}
+
+function createPurchaseRequest() {
+ const id=Number(document.getElementById("requestProduct").value);
+ const qty=Number(document.getElementById("requestQty").value);
+ const supplierIndex=document.getElementById("requestSupplier").value;
+ const p=data.products.find(x=>x.id===id);
+ if(!p||!Number.isInteger(qty)||qty<1){alert("Select a product and enter a valid requested quantity.");return;}
+ const supplier=supplierIndex===""?"":data.suppliers[Number(supplierIndex)]?.name||"";
+ data.procurementRequests.unshift({date:today(),product:p.name,qty,supplier,status:"Pending",requestedBy:current.username});
+ save();showPage("Procurement");
+}
+
+function updatePurchaseRequest(index,status) {
+ if(!data.procurementRequests[index])return;
+ data.procurementRequests[index].status=status;save();showPage("Procurement");
+}
+
+
+function addSupplier() {
+ let name=document.getElementById("supplierName").value.trim();
+ let contact=document.getElementById("supplierContact").value.trim();
+ let item=document.getElementById("supplierItem").value.trim();
+
+ if(!name||!contact||!item) {
+  alert("Complete all supplier details.");
+  return;
+ }
+
+ data.suppliers.push({name,contact,item});
+ save();
+ showPage("Procurement");
+}
+
+/* FINANCE */
+function financePage() {
+ let expenses=totalExpenses();
+
+ return heading("Finance Management","Revenue, expenses and estimated business performance")+
+ `<div class="cards">
+ ${metric("Total Revenue",money(totalRevenue()))}
+ ${metric("Total Expenses",money(expenses))}
+ ${metric("Estimated Balance",money(totalRevenue()-expenses))}
+ ${metric("Transactions",data.sales.length)}
+ </div>
+
+ <div class="panel"><h3>Record Business Expense</h3>
+ <div class="form-grid">
+ <input id="expenseDesc" placeholder="Expense description">
+ <input id="expenseAmount" type="number" min="1" placeholder="Amount (UGX)">
+ <button class="btn" onclick="addExpense()">Save Expense</button>
+ </div></div>
+
+ <div class="panel"><h3>Expense Records</h3>
+ <table><tr><th>Date</th><th>Description</th><th>Amount</th></tr>
+ ${data.expenses.map(e=>`<tr><td>${e.date}</td><td>${e.description}</td><td>${money(e.amount)}</td></tr>`).join("")}
+ </table></div>
+
+ <div class="panel"><h3>Sales by Period</h3>${periodTable()}</div>
+
+ <div class="panel"><h3>Financial Sales Information</h3>
+ <table>
+ <tr><th>Financial Item</th><th>Amount</th></tr>
+ <tr><td>Total sales revenue</td><td>${money(totalRevenue())}</td></tr>
+ <tr><td>Recorded expenses</td><td>${money(expenses)}</td></tr>
+ <tr><td>Estimated balance</td><td>${money(totalRevenue()-expenses)}</td></tr>
+ </table>
+ <p class="small">The estimated balance is a basic prototype calculation, not a complete accounting profit figure.</p>
+ </div>`;
+}
+
+function addExpense() {
+ let description=document.getElementById("expenseDesc").value.trim();
+ let amount=Number(document.getElementById("expenseAmount").value);
+
+ if(!description||amount<=0) {
+  alert("Enter a valid expense.");
+  return;
+ }
+
+ data.expenses.push({description,amount,date:today()});
+ save();
+ showPage("Finance");
+}
+
+/* HUMAN RESOURCES */
+function hrPage() {
+ const counts=departmentCounts();
+ return heading("Human Resources","Manage employee records, departmental assignments and employment status")+
+ `<div class="cards">
+ ${metric("Total Employees",data.employees.length)}
+ ${metric("Departments",counts.length)}
+ ${metric("Active Employees",data.employees.filter(e=>e.status==="Active").length)}
+ ${metric("Inactive Employees",data.employees.filter(e=>e.status!=="Active").length)}
+ </div>
+ <div class="panel"><h3>Add Employee Record</h3>
+ <div class="form-grid">
+ <input id="employeeName" placeholder="Full name">
+ <select id="employeeDepartment">${["Management","Sales","Inventory","Procurement","Finance","Administration & HR"].map(d=>`<option>${d}</option>`).join("")}</select>
+ <input id="employeePosition" placeholder="Job title / position">
+ <input id="employeePhone" placeholder="Phone number">
+ <input id="employeeEmail" type="email" placeholder="Email address">
+ <button class="btn" onclick="addEmployee()">Add Employee</button>
+ </div></div>
+ <div class="panel"><h3>Employee Records</h3>
+ <div class="actions"><input id="employeeSearch" placeholder="Search employee..." oninput="filterEmployees()">
+ <select id="employeeDeptFilter" onchange="filterEmployees()"><option value="">All departments</option>${counts.map(x=>`<option>${x[0]}</option>`).join("")}</select></div>
+ <div id="employeeTableArea">${employeeTable(data.employees)}</div>
+ </div>
+ <div class="panel"><h3>Department Staff Distribution</h3>
+ <table><tr><th>Department</th><th>Number of Employees</th></tr>
+ ${counts.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join("")}
+ <tr><th>Total</th><th>${data.employees.length}</th></tr></table>
+ </div>
+ <div class="panel"><h3>HR Responsibilities</h3><p class="small">The HR Officer can add, view, edit, search, update and remove employee records, update department and job assignments, and mark employees active or inactive. These actions should be recorded in the audit trail in the deployed system.</p></div>`;
+}
+
+function syncStaffCounts() {
+ data.staff=departmentCounts().map(x=>({department:x[0],count:x[1]}));
+}
+
+function isGeneralManagerEmployee(employee) {
+ if(!employee) return false;
+ const position=String(employee.position||"").toLowerCase();
+ const department=String(employee.department||"").toLowerCase();
+ return position.includes("general manager") || position==="ceo" ||
+        position.includes("chief executive officer") ||
+        (department==="management" && (position.includes("manager") || position.includes("ceo")));
+}
+
+function employeeTable(rows) {
+ if(!rows.length)return '<div class="empty">No employee records found.</div>';
+ return `<table><tr><th>Name</th><th>Department</th><th>Position</th><th>Phone</th><th>Email</th><th>Status</th><th>Actions</th></tr>
+ ${rows.map(e=>{
+  const protectedGM=isGeneralManagerEmployee(e);
+  return `<tr><td>${e.name}</td><td>${e.department}</td><td>${e.position}</td><td>${e.phone||"—"}</td><td>${e.email||"—"}</td><td>${e.status}</td><td><button class="btn secondary small-btn" onclick="editEmployee(${e.id})">Edit</button> ${protectedGM?'<span class="small">Protected</span>':`<button class="btn secondary small-btn" onclick="toggleEmployeeStatus(${e.id})">${e.status==="Active"?"Deactivate":"Activate"}</button> <button class="btn danger small-btn" onclick="deleteEmployee(${e.id})">Delete</button>`}</td></tr>`;
+ }).join("")}</table>`;
+}
+
+function addEmployee() {
+ const name=document.getElementById("employeeName").value.trim();
+ const department=document.getElementById("employeeDepartment").value;
+ const position=document.getElementById("employeePosition").value.trim();
+ const phone=document.getElementById("employeePhone").value.trim();
+ const email=document.getElementById("employeeEmail").value.trim();
+ if(!name||!position){alert("Enter the employee name and job title.");return;}
+ data.employees.push({id:Date.now(),name,department,position,phone,email,status:"Active"});
+ syncStaffCounts();save();showPage("Human Resources");
+}
+
+function editEmployee(id) {
+ const e=data.employees.find(x=>x.id===id);if(!e)return;
+ const protectedGM=isGeneralManagerEmployee(e);
+ const name=prompt("Employee full name:",e.name);if(name===null)return;
+ let department=e.department;
+ let position=e.position;
+ if(!protectedGM) {
+  department=prompt("Department (Management, Sales, Inventory, Procurement, Finance, Administration & HR):",e.department);if(department===null)return;
+  position=prompt("Job title / position:",e.position);if(position===null)return;
+ }
+ const phone=prompt("Phone number:",e.phone||"");if(phone===null)return;
+ const email=prompt("Email address:",e.email||"");if(email===null)return;
+ const allowed=["Management","Sales","Inventory","Procurement","Finance","Administration & HR"];
+ if(!name.trim()||!allowed.includes(department.trim())||!position.trim()){alert("Check the name, department and position.");return;}
+ Object.assign(e,{name:name.trim(),department:department.trim(),position:position.trim(),phone:phone.trim(),email:email.trim()});
+ syncStaffCounts();save();showPage("Human Resources");
+}
+
+function toggleEmployeeStatus(id) {
+ const e=data.employees.find(x=>x.id===id);if(!e)return;
+ if(isGeneralManagerEmployee(e)) {
+  alert("The General Manager's account and employment status are protected. HR cannot deactivate or activate this record.");
+  return;
+ }
+ e.status=e.status==="Active"?"Inactive":"Active";save();showPage("Human Resources");
+}
+
+function deleteEmployee(id) {
+ const e=data.employees.find(x=>x.id===id);if(!e)return;
+ if(isGeneralManagerEmployee(e)) {
+  alert("The General Manager's employee record is protected and cannot be deleted by HR.");
+  return;
+ }
+ if(!confirm("Permanently delete the employee record for "+e.name+"?"))return;
+ data.employees=data.employees.filter(x=>x.id!==id);syncStaffCounts();save();showPage("Human Resources");
+}
+
+function filterEmployees() {
+ const q=document.getElementById("employeeSearch").value.toLowerCase();
+ const d=document.getElementById("employeeDeptFilter").value;
+ const rows=data.employees.filter(e=>(e.name+" "+e.position).toLowerCase().includes(q)&&(!d||e.department===d));
+ document.getElementById("employeeTableArea").innerHTML=employeeTable(rows);
+}
+
+
+/* REPORTING */
+function periodTable() {
+ let d=filteredSales("daily");
+ let w=filteredSales("weekly");
+ let m=filteredSales("monthly");
+
+ return `<table>
+ <tr><th>Period</th><th>Transactions</th><th>Sales Total</th></tr>
+ <tr><td>Today</td><td>${d.length}</td><td>${money(totalRevenue(d))}</td></tr>
+ <tr><td>This week</td><td>${w.length}</td><td>${money(totalRevenue(w))}</td></tr>
+ <tr><td>This month</td><td>${m.length}</td><td>${money(totalRevenue(m))}</td></tr>
+ <tr><td>All time</td><td>${data.sales.length}</td><td>${money(totalRevenue())}</td></tr>
+ </table>`;
+}
+
+/* This report includes every product, even products with zero sales. */
+function performanceTable() {
+ let rows=productPerformance();
+
+ if(!rows.length) return '<div class="empty">No products are registered.</div>';
+
+ return `<table>
+ <tr><th>Product</th><th>Category</th><th>Quantity Sold</th><th>Sales Revenue</th><th>Current Stock</th></tr>
+ ${rows.map(p=>`<tr>
+ <td>${p.name}</td>
+ <td>${p.category}</td>
+ <td>${p.sold}</td>
+ <td>${money(p.revenue)}</td>
+ <td>${p.qty}</td>
+ </tr>`).join("")}
+ </table>`;
+}
+
+function reportsPage() {
+ let d=filteredSales("daily");
+ let w=filteredSales("weekly");
+ let m=filteredSales("monthly");
+
+ let perf=productPerformance();
+ let sold=perf.filter(p=>p.sold>0);
+ let top=sold[0];
+ let least=sold[sold.length-1];
+ let expenses=totalExpenses();
+ let categories=categoryPerformance();
+
+ return heading("Management Reports","Sales, inventory, financial and product performance reports")+
+
+ `<div class="cards">
+ ${metric("All-time Sales",money(totalRevenue()))}
+ ${metric("Daily Sales",money(totalRevenue(d)))}
+ ${metric("Weekly Sales",money(totalRevenue(w)))}
+ ${metric("Monthly Sales",money(totalRevenue(m)))}
+ </div>
+
+ <div class="cards">
+ ${metric("Total Transactions",data.sales.length)}
+ ${metric("Total Products",data.products.length)}
+ ${metric("Current Stock Value",money(stockValue()))}
+ ${metric("Low / Out of Stock",lowStock().length+" / "+outStock().length)}
+ </div>
+
+ <div class="panel"><h3>Sales Performance by Period</h3>${periodTable()}</div>
+
+ <div class="grid2">
+ <div class="panel"><h3>Most-Sold Product</h3>
+ ${top?`<div class="report-highlight">${top.name}</div><p class="small">${top.sold} units sold · ${money(top.revenue)}</p>`:'<div class="empty">No sales recorded yet.</div>'}
+ </div>
+ <div class="panel"><h3>Least-Sold Product</h3>
+ ${least?`<div class="report-highlight">${least.name}</div><p class="small">${least.sold} units sold · ${money(least.revenue)}</p>`:'<div class="empty">No sales recorded yet.</div>'}
+ </div>
+ </div>
+
+ <div class="panel"><h3>Complete Product Sales Performance</h3>
+ <p class="small">This report includes all registered products, including items that have not yet been sold.</p>
+ ${performanceTable()}
+ </div>
+
+ <div class="panel"><h3>Sales by Product Category</h3>
+ ${categories.length?
+ `<table><tr><th>Category</th><th>Sales Revenue</th></tr>
+ ${categories.map(x=>`<tr><td>${x[0]}</td><td>${money(x[1])}</td></tr>`).join("")}
+ </table>`:
+ '<div class="empty">No sales data available.</div>'}
+ </div>
+
+ <div class="panel"><h3>Financial Summary</h3>
+ <table>
+ <tr><th>Financial Item</th><th>Amount</th></tr>
+ <tr><td>Total Sales Revenue</td><td>${money(totalRevenue())}</td></tr>
+ <tr><td>Total Recorded Expenses</td><td>${money(expenses)}</td></tr>
+ <tr><td>Estimated Balance Before Other Costs</td><td>${money(totalRevenue()-expenses)}</td></tr>
+ <tr><td>Current Stock Value at Selling Prices</td><td>${money(stockValue())}</td></tr>
+ </table>
+ <p class="small">The estimated balance is a basic prototype calculation, not a complete accounting profit figure.</p>
+ </div>
+
+ <div class="panel"><h3>Inventory Status Report</h3>
+ ${stockTable(data.products)}
+ </div>
+
+ <div class="panel"><h3>Low Stock and Out-of-Stock Report</h3>
+ ${stockTable([...outStock(),...lowStock()])}
+ </div>
+
+ <div class="panel"><h3>Supplier Report</h3>
+ <table><tr><th>Supplier</th><th>Contact</th><th>Supplies</th></tr>
+ ${data.suppliers.map(s=>`<tr><td>${s.name}</td><td>${s.contact}</td><td>${s.item}</td></tr>`).join("")}
+ </table>
+ </div>
+
+ <div class="panel"><h3>Employee Report</h3>
+ <table><tr><th>Department</th><th>Employees</th></tr>
+ ${departmentCounts().map(s=>`<tr><td>${s[0]}</td><td>${s[1]}</td></tr>`).join("")}
+ <tr><th>Total</th><th>${data.employees.length}</th></tr>
+ </table>
+ </div>
+
+ <div class="panel no-print">
+ <button class="btn" onclick="window.print()">Print / Save Reports as PDF</button>
+ </div>`;
+}
+
+/* USER ACCESS */
+function usersPage() {
+ return heading("User Access Management","System accounts and assigned access permissions")+
+ `<div class="panel"><h3>System Accounts</h3>
+ <table>
+ <tr><th>Username</th><th>Department / Role</th><th>Access Rights</th></tr>
+ <tr><td>owner</td><td>General Manager / CEO</td><td>Super Administrator — confidential Overview, all modules, all receipts and reports</td></tr>
+ <tr><td>sales</td><td>Sales</td><td>Sales recording, receipt generation, viewing and printing</td></tr>
+ <tr><td>inventory</td><td>Inventory</td><td>Inventory management only</td></tr>
+ <tr><td>procurement</td><td>Procurement</td><td>Add, edit and remove supplier records; create and track purchase requests; view low-stock and replenishment requirements</td></tr>
+ <tr><td>finance</td><td>Finance</td><td>Financial records and sales summaries for reporting; no receipt access</td></tr>
+ <tr><td>hr</td><td>Administration & HR</td><td>Add, view, search, edit, activate/deactivate and delete employee records; maintain departments and job assignments</td></tr>
+ </table>
+ </div>
+
+ <div class="panel"><h3>Receipt Access Rules</h3>
+ <table>
+ <tr><th>Role</th><th>View Receipts</th><th>Print / Reprint</th><th>Alter / Delete</th></tr>
+ <tr><td>General Manager / CEO</td><td>Yes</td><td>Yes</td><td>No direct receipt editing in this prototype</td></tr>
+ <tr><td>Sales Department</td><td>Yes</td><td>Yes</td><td>No direct receipt editing in this prototype</td></tr>
+ <tr><td>Finance Department</td><td>Sales summaries only</td><td>No</td><td>No</td></tr>
+ <tr><td>Inventory Department</td><td>No</td><td>No</td><td>No</td></tr>
+ <tr><td>Procurement Department</td><td>No</td><td>No</td><td>No</td></tr>
+ <tr><td>Administration & HR</td><td>No</td><td>No</td><td>No</td></tr>
+ </table>
+ </div>`;
+}
+
+/* AUDIT LOG */
+function auditPage() {
+ return heading("Audit Log","Current system session activity")+
+ `<div class="panel"><h3>Current Session</h3>
+ <table>
+ <tr><th>Activity</th><th>Account</th><th>Status</th></tr>
+ <tr><td>Signed in</td><td>${current.username}</td><td><span class="status">Successful</span></td></tr>
+ </table>
+ <p class="small">This prototype displays the current session only. A deployed MIS should maintain a permanent database audit trail of user activities.</p>
+ </div>`;
+}
+
+/* START APPLICATION */
+buildNav();
+</script>
+</body>
+</html>
