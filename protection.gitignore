@@ -1,0 +1,19 @@
+
+# Protect local database connection settings
+db_connect.php
+.env
+config.local.php
+
+# Temporary setup and testing files
+setup_accounts.php
+test_connection.php
+
+# Logs and backups
+*.log
+*.bak
+*.sql.zip
+
+# Temporary files
+*.tmp
+.DS_Store
+Thumbs.db
