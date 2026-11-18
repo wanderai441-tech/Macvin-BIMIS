@@ -1,4 +1,3 @@
-
 <?php
 require_once "auth.php";
 require_login();
@@ -150,9 +149,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" &&
             // Save sale
             $stmt = $conn->prepare(
                 "INSERT INTO sales
-                 (user_id, sale_date, receipt_no, total_amount)
+                 (user_id, sale_date, receipt_number, total_amount)
                  VALUES (?, NOW(), ?, ?)"
             );
+
+            if (!$stmt) {
+                throw new Exception("Could not prepare the sales record: " . $conn->error);
+            }
 
             $stmt->bind_param("isd", $user_id, $receipt_no, $total);
             $stmt->execute();
@@ -551,3 +554,4 @@ th { background: #e9eef5; }
 
 </body>
 </html>
+
